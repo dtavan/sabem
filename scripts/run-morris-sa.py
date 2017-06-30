@@ -30,7 +30,8 @@ if __name__ == '__main__':
     parser.add_argument('-n', dest='r', default=10, type=int, help='Number of elementary effects or trajectories (default: 10)')
     parser.add_argument('-l', dest='p', default=6, type=int, help='Number of levels in the OAT sampling (default: 6)')
     parser.add_argument('-g', dest='delta', default=2, type=int, help='Grid jump size in the OAT sampling (default: 2)')
-    parser.add_argument('-c', dest='ncore', default='max', help='Number of local cores to use for parallel simulations (default: max)')
+    parser.add_argument('--ncore', default=-1, type=int, help='Number of local cores used for parallel simulations (default: -1 to use all local cores)')
+    parser.add_argument('--stopwatch', action='store_true', help='Enables stopwatch to return total simulation run time.')
 
     args = parser.parse_args()
 
@@ -41,8 +42,7 @@ if __name__ == '__main__':
     r = args.r # Number of elementary effects or trajectories; Typical values: between 5 and 10
     p = args.p # Number of levels in the OAT sampling; Typical value: 4 or 6
     delta = args.delta # "grid jump" (minimum jump from one level to the other); Typical value: 1 or 2
-    ncore = args.ncore
-	
+
     # Load parameter range file
     problem = read_param_file(os.path.join(model_dir, param_file))
 
@@ -54,8 +54,7 @@ if __name__ == '__main__':
     samples.to_csv(os.path.join(model_dir, "Parameter_Samples.csv"), index=False)
 
     # Prompt user for confirmation before launching simulations
-    print('The script will launch {} simulation jobs, which can take a significant time to run. Do you want to continue? (y/n)'.format(samples.shape[0]))
-    cont = input()
+    cont = input('\nThe script will launch {} simulation jobs, which can take a significant time to run. Do you want to continue? (y/n) '.format(samples.shape[0]))
     cont = cont[:1].lower()
     if cont not in ['y','n']:
         print('Error: expected y or n')
@@ -72,13 +71,13 @@ if __name__ == '__main__':
     batch.add_jobs()
 
     # Run simulation jobs
-    batch.run(ncore)
+    batch.run(args.ncore, args.stopwatch)
 
     # Extracting results
     #batch.jobs2df()
     #batch.runsum2df()
     batch.results2df()
-	
+
     # Evaluate all model output attributes if no attribute was specified
     if out_attr == 'Both':
         out_attr_list = ['Total', 'Maximum Value']
@@ -86,7 +85,7 @@ if __name__ == '__main__':
         out_attr_list = ['Maximum Value']
     else:
         out_attr_list = ['Total']
-	
+
 	# Perform analysis for each attribute in list
     for o_attr in out_attr_list:
         results = batch.results_df[batch.results_df.Month == o_attr].drop('Month', axis=1).set_index('JobID')
