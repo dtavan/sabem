@@ -1,0 +1,11 @@
+[TRNSYS]
+Install_Dir = C:\Trnsys18
+TRNExe_Path = %(Install_Dir)s\Exe\TrnEXE64.exe
+TRNBuild_Path = %(Install_Dir)s\Building\TRNBuild.exe
+trnsIDF_Path = %(Install_Dir)s\Building\trnsIDF\trnsidfup.exe
+ModelFile_Extensions = .dck
+Results_Folder = .\Results
+ResultFile_Extensions = .out
+LogFile_Extensions = .log
+TemplateFile_SearchString = _Template
+SampleFile_SearchString = _Samples

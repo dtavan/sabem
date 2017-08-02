@@ -136,6 +136,13 @@ ALL external TRNSYS project data file (such as weather file, or any other type o
 
 For example, the Madrid weather file is contained in the `Weather` sub-folder of the `trnsys_sunspace` project folder and the path set in the `Type15` is `Weather\ES-Madrid-Barajas-82210.tm2`.
 
+#### PyBPS Configuration
+
+Check that the `Install_Dir` parameter for the simulation tool directory is set properly in the `pybps_config.ini` file located in the `examples\trnsys_sunspace` folder. By default, it is set for the TRNSYS17 Demo, but if you have a TRNSYS17 license, you should set the path properly, as shown below
+
+    [TRNSYS]
+    Install_Dir = C:\TRNSYS17 # Default installation directory for TRNSYS v17
+
 ## Perform Sensitivity Analysis
 
 For now, the only type of sensitivity analysis demonstrated is the Morris method, which is one of the simplest yet most effective sensitivity analysis methods.

@@ -1,4 +1,5 @@
 .DS_Store
+.ipynb_checkpoints
 
 examples/_pybps_results
 examples/_pybps_simulations
